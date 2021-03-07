@@ -14,7 +14,7 @@ object SparkWordCount {
       .getOrCreate()
 
     // input data
-    val data = spark.read.textFile("C:\\激活日志.log")
+    val data = spark.read.textFile("data/test/test.txt")
 
     // demo1 处理逻辑
     val words = data.filter(line => line.contains("14")).count()

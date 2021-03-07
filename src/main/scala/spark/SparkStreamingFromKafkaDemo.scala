@@ -18,10 +18,10 @@ object SparkStreamingFromKafkaDemo {
     // TODO: 可以通过ssc.sparkContext 来访问SparkContext或者通过已经存在的SparkContext来创建StreamingContext
 
     //设置检查点目录
-    scc.sparkContext.setCheckpointDir("test/checkpoint")
+    scc.sparkContext.setCheckpointDir("data/checkpoint")
 
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "192.168.1.1:9092",
+      "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "use_a_separate_group_id_for_each_stream",

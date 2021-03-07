@@ -6,13 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="582dd664-2fce-4cf7-b0d0-49f3eb74babf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/spark/SparkWordCount.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/spark/SparkWordCount.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/study.iml" beforeDir="false" />
-    </list>
+    <list default="true" id="582dd664-2fce-4cf7-b0d0-49f3eb74babf" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +32,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-270">
@@ -56,14 +50,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SparkStreamingFromKafkaDemo.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SparkStreamingFromKafkaDemo.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="71" selection-start-line="71" selection-end-line="71" />
+            <state relative-caret-position="230">
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
               <folding>
                 <element signature="e#15#78#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SparkStreamingDemo.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingDemo.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SparkSqlDemo.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkSqlDemo.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="6" column="12" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StructuredStreamingDemo.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/spark/StructuredStreamingDemo.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-90">
+              <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -131,12 +152,12 @@
         <option value="$PROJECT_DIR$/src/main/java/spark/SparkStreamFromKafka.java" />
         <option value="$PROJECT_DIR$/src/main/scala/spark/SparkStreamingKafka.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/spark/SparkSqldemo.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala" />
         <option value="$PROJECT_DIR$/src/test/java/scla/HelloScala.scala" />
         <option value="$PROJECT_DIR$/src/test/java/scala/HelloScala.scala" />
         <option value="$PROJECT_DIR$/data/test/test.txt" />
         <option value="$PROJECT_DIR$/src/main/scala/spark/SparkWordCount.scala" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala" />
       </list>
     </option>
   </component>
@@ -215,6 +236,60 @@
               <item name="study" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="spark" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="study" type="b2602c69:ProjectViewProjectNode" />
+              <item name="study" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -360,12 +435,20 @@
       <workItem from="1614302161848" duration="15671000" />
       <workItem from="1615099849837" duration="143000" />
       <workItem from="1615100047576" duration="1205000" />
-      <workItem from="1615101313371" duration="1550000" />
+      <workItem from="1615101313371" duration="1869000" />
     </task>
+    <task id="LOCAL-00001" summary="[修改] 修改pom文件">
+      <created>1615104236172</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1615104236172</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59226000" />
+    <option name="totallyTimeSpent" value="59545000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -383,14 +466,14 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32843137" />
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49394855" weight="0.48613375" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5060514" side_tool="true" weight="0.48613375" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="7" sideWeight="0.5033512" side_tool="true" visible="true" weight="0.3281027" />
       <window_info anchor="right" id="Maven Projects" order="3" weight="0.24357034" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.3281027" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4966488" visible="true" weight="0.3281027" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.617689" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32952926" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.2055465" visible="true" weight="0.31903484" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.2055465" visible="true" weight="0.31903484" />
       <window_info anchor="right" id="Database" order="3" weight="0.32980332" />
       <window_info id="Structure" order="1" sideWeight="0.7944535" side_tool="true" weight="0.27987897" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24962178" />
@@ -451,18 +534,15 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[修改] 修改pom文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="[修改] 修改pom文件" />
+  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/flink/DistributeCacheJob.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/flink/BatchJob.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -516,13 +596,6 @@
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.11/2.4.1/spark-streaming_2.11-2.4.1.jar!/org/apache/spark/streaming/api/java/JavaDStreamLike.class" />
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.11/2.4.1/spark-streaming_2.11-2.4.1.jar!/org/apache/spark/streaming/api/java/JavaPairDStream.class" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/spark/package.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingDemo.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.11/2.4.1/spark-core_2.11-2.4.1-sources.jar!/org/apache/spark/SparkContext.scala" />
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.11/2.4.1/spark-streaming_2.11-2.4.1-sources.jar!/org/apache/spark/streaming/dstream/PairDStreamFunctions.scala" />
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming-kafka-0-10_2.11/2.4.1/spark-streaming-kafka-0-10_2.11-2.4.1-sources.jar!/org/apache/spark/streaming/kafka010/ConsumerStrategy.scala" />
@@ -575,13 +648,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/scla/HelloScala.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkSqlDemo.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="12" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spark/SparkStreamFromKafka.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -613,20 +679,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+          <folding>
+            <element signature="e#15#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingDemo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkSqlDemo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/StructuredStreamingDemo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-270">
           <caret line="75" column="74" selection-start-line="75" selection-start-column="74" selection-end-line="75" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/spark/SparkStreamingFromKafkaDemo.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="e#15#78#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

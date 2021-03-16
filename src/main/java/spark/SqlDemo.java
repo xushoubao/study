@@ -17,7 +17,7 @@ public class SqlDemo {
                 .getOrCreate();
 
         // create datafream
-        Dataset<Row> df = spark.read().json("src/main/resources/people.json");
+        Dataset<Row> df = spark.read().json("data/test/resources/people.json");
         df.show();
 
         // run as a sql

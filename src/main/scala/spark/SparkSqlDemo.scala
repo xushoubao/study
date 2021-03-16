@@ -11,7 +11,7 @@ object SparkSqlDemo {
     val spark = SparkSession.builder().master("local").appName("sql demo").getOrCreate()
 
     // trans to df
-    val input = spark.sparkContext.textFile("data/test/people/people.txt")
+    val input = spark.sparkContext.textFile("data/test/people.txt")
     import spark.implicits._
     val peopleDF = input.map(line => line.split(","))
       .map(word => Person(word(0), word(1).trim.toLong))

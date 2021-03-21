@@ -7,14 +7,20 @@ import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.Tuple2;
 
 public class WordCountStreaming {
 
+    private static Logger logger = LoggerFactory.getLogger(WordCountStreaming.class);
+
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        logger.info("create env success {}", env.toString());
 
-        DataStreamSource<String> inputStream = env.socketTextStream("192.168.1.1", 9999);
+        DataStreamSource<String> inputStream = env.socketTextStream("192.168.1.210", 9999);
 
 
         inputStream.flatMap((FlatMapFunction<String, String>) (value, out) -> {
@@ -24,7 +30,7 @@ public class WordCountStreaming {
                 out.collect(s);
             }
 
-        }).map(new MapFunction<String, Tuple2<String, Integer>>() {
+        }).returns(String.class).map(new MapFunction<String, Tuple2<String, Integer>>() {
             @Override
             public Tuple2<String, Integer> map(String value) throws Exception {
                 return new Tuple2<>(value, 1);

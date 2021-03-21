@@ -16,7 +16,7 @@ public class WordCount {
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // input data
-        JavaRDD<String> data = sc.textFile("C:\\激活日志.log", 1).cache();
+        JavaRDD<String> data = sc.textFile("data/test/test.txt", 1).cache();
 
         // demo1
         long count = data.filter(line -> line.contains("14")).count();

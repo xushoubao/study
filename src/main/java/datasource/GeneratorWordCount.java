@@ -5,7 +5,7 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Generator implements SourceFunction<WordCount> {
+public class GeneratorWordCount implements SourceFunction<WordCount> {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private boolean running = true;
 

@@ -18,7 +18,7 @@
 
 package flink;
 
-import datasource.Generator;
+import datasource.GeneratorWordCount;
 import handler.WcAggregateFunc;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -46,7 +46,7 @@ public class StreamingJob {
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		logger.info("env create success ...");
 
-		env.addSource(new Generator()).setParallelism(1)
+		env.addSource(new GeneratorWordCount()).setParallelism(1)
 //				.keyBy(WordCount::getWord)
 				.keyBy((wordCount) -> wordCount.getWord())
 				.timeWindow(Time.seconds(20)).aggregate(new WcAggregateFunc())

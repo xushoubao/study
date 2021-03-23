@@ -3,15 +3,11 @@ package flink;
 import bean.WordCount;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.serialization.TypeInformationSerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.util.Collector;
-import schema.WordCountDeserialization;
-import schema.WordCountSchema;
 
 import java.util.Properties;
 
@@ -28,7 +24,7 @@ public class StreamingKafkaWordCountConsumer {
         prop.setProperty("group.id", "study_flink_word_count");
 
         FlinkKafkaConsumer<WordCount> consumer = new FlinkKafkaConsumer<WordCount>(
-                "wordcount",
+                "watermark",
                 new TypeInformationSerializationSchema(TypeInformation.of(WordCount.class), new ExecutionConfig()),
                 prop);
 

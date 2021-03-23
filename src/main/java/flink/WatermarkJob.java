@@ -1,19 +1,15 @@
 package flink;
 
 import bean.WordCount;
-import handler.WcAggregateFunc;
-import handler.WcAssignerWithPeriodicWatermark;
-import handler.WcFlatMapFunc;
-import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.api.common.ExecutionConfig;
+import org.apache.flink.api.common.serialization.TypeInformationSerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.TimeCharacteristic;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
-import java.util.HashMap;
+import java.util.Properties;
 
-@Deprecated
 public class WatermarkJob {
 
     public static void main(String[] args) {
@@ -22,14 +18,23 @@ public class WatermarkJob {
         // set event time
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        DataStreamSource<String> stream = env.socketTextStream("192.168.1.1", 9999);
+        Properties prop = new Properties();
+        prop.setProperty("bootstrap.servers", "localhost:9092");
+        prop.setProperty("group.id", "study_flink_watermark");
 
-        stream.flatMap(new WcFlatMapFunc())
-                .assignTimestampsAndWatermarks(new WcAssignerWithPeriodicWatermark())
-                .keyBy((wordCount) -> wordCount.getWord())
-                .timeWindow(Time.seconds(5))
-                .aggregate(new WcAggregateFunc())
-//                .sum("count")
-                .print();
+        FlinkKafkaConsumer<WordCount> consumer = new FlinkKafkaConsumer<>("watermark",
+                new TypeInformationSerializationSchema<WordCount>(
+                        TypeInformation.of(WordCount.class),
+                        new ExecutionConfig()),
+                prop);
+
+        consumer.setStartFromGroupOffsets();
+
+
+//        env.addSource(consumer).assignTimestampsAndWatermarks(new )
+
+
+
+
     }
 }

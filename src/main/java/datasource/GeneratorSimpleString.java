@@ -1,12 +1,12 @@
 package datasource;
 
-import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GeneratorSimpleString implements SourceFunction<String> {
+public class GeneratorSimpleString implements ParallelSourceFunction<String> {
 
     private volatile boolean isRunning = true;
     private volatile int serNo = 0;

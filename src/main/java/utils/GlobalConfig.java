@@ -7,7 +7,7 @@ import java.util.Properties;
 public class GlobalConfig {
 
     private static GlobalConfig config = new GlobalConfig();
-    Properties properties = new Properties();
+    public Properties properties = new Properties();
 
     private GlobalConfig() {
         try {

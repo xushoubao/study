@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class WordCount {
+    private int serNo;
     private String word;
     private int count;
     private long captureTime;
@@ -50,9 +51,10 @@ public class WordCount {
     }
 
     public static WordCount genWc() {
-        int cnt  = new Random().nextInt(arr.length);
-        String word = arr[cnt];
-        return new WordCount(word, cnt);
+        int index  = new Random().nextInt(arr.length);
+        int count = new Random().nextInt(100);
+        String word = arr[index];
+        return new WordCount(word, count);
     }
 
     public static void main(String[] args) throws InterruptedException {

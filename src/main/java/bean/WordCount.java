@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 public class WordCount {
-    private int serNo;
     private String word;
     private int count;
     private long captureTime;

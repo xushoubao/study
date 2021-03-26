@@ -29,7 +29,8 @@ public class Kafka2Redis {
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         env.enableCheckpointing(5000);
 
-        Properties prop = GlobalConfig.instance().properties;
+        GlobalConfig config = GlobalConfig.instance("dev", "conf");
+        Properties prop = config.properties;
         prop.setProperty("group.id", "kafka2redis");
 
         FlinkKafkaConsumer<WordCount> consumer = new FlinkKafkaConsumer<WordCount>("watermark",

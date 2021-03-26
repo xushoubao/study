@@ -1,6 +1,5 @@
 package utils;
 
-import groovy.lang.Closure;
 import groovy.util.ConfigSlurper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-// 单例模式，提供不同的实例方式，如果在同一个程序中使用，可以使用reload对对象中的内容进行清理
+// 单例，提供不同的实例方式，如果在同一个程序中使用，可以使用reInstance对配置进行重载
 public class GlobalConfig {
 
     private Logger logger = LoggerFactory.getLogger(GlobalConfig.class);
@@ -71,16 +70,23 @@ public class GlobalConfig {
         return globalConfig;
     }
 
+    public static GlobalConfig reInstance(String groovyEnv, String configDir) {
+        return reInstance(groovyEnv, configDir, null);
+    }
+
     // 重新加载配置，可以按需进行配置重载，以及配置热加载
-    public static void reloadConfig() {
+    public static GlobalConfig reInstance(String groovyEnv, String configDir, FileFilter filter) {
         if (globalConfig != null) {
             synchronized (GlobalConfig.class) {
                 if (globalConfig != null) {
                     globalConfig.properties.clear();
                     globalConfig.groovy.clear();
+                    globalConfig = null;
                 }
             }
         }
+
+        return instance(groovyEnv, configDir, filter);
     }
 
     //加载配置文件
@@ -92,6 +98,7 @@ public class GlobalConfig {
                 logger.warn("congif dir is not directory");
             }
 
+            // 加载新的配置
             for (File file : configDirFile.listFiles(filter)) {
                 if (file.getName().endsWith(".properties")) {
                     globalConfig.initProperties(file);
@@ -102,9 +109,24 @@ public class GlobalConfig {
         }
     }
 
-    public static void test2() {
-        GlobalConfig filterConfig = GlobalConfig.instance("dev",
-                "conf",
+    public static void test() {
+        GlobalConfig config = GlobalConfig.instance("dev","conf");
+
+//        String bootstrapServers = (String) config.groovy.get("bootstrap.servers");
+//        System.out.println("bootstrap.server="+ bootstrapServers);
+//
+//        Object groupId = ((Closure) config.groovy.get("group.id")).call("test");
+//        System.out.println("group.id="+ groupId);
+//
+//        String study = (String) config.properties.get("study");
+//        System.out.println("study="+ study);
+
+        System.out.println("config :"+ config.properties);
+        System.out.println("config :"+ config.groovy);
+
+        System.out.println("===============");
+
+        GlobalConfig filterConfig = GlobalConfig.reInstance("dev", "conf",
                 pathname -> pathname.getName().equals("test.groovy"));
 
         System.out.println("filterConfig:"+ filterConfig.properties);
@@ -112,27 +134,7 @@ public class GlobalConfig {
 
     }
 
-
-    public static void test1() {
-        GlobalConfig config = GlobalConfig.instance("dev","conf");
-
-
-        String bootstrapServers = (String) config.groovy.get("bootstrap.servers");
-        System.out.println("bootstrap.server="+ bootstrapServers);
-
-        Object groupId = ((Closure) config.groovy.get("group.id")).call("test");
-        System.out.println("group.id="+ groupId);
-
-        String study = (String) config.properties.get("study");
-        System.out.println("study="+ study);
-
-        System.out.println("properties>>"+ config.properties);
-        System.out.println("groovy>>"+ config.groovy);
-
-    }
-
     public static void main(String[] args) {
-//        test1();
-        test2();
+        test();
     }
 }

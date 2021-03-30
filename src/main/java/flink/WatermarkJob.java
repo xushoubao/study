@@ -6,25 +6,17 @@ import org.apache.flink.api.common.eventtime.*;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.serialization.TypeInformationSerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeutils.TypeSerializer;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.TimeCharacteristic;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
-import org.apache.flink.streaming.api.windowing.assigners.WindowAssigner;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.triggers.Trigger;
-import org.apache.flink.streaming.api.windowing.windows.Window;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.spark.streaming.Seconds;
 import utils.GlobalConfig;
 
 import java.time.Duration;
-import java.util.Collection;
 import java.util.Properties;
 
 public class WatermarkJob {
@@ -39,7 +31,7 @@ public class WatermarkJob {
 
         // kafka的参数
         Properties prop = GlobalConfig.instance("dev", "conf").properties;
-//        prop.setProperty("group.id", "watermatkJob");
+        prop.setProperty("group.id", "watermatkJob");
         System.out.println("config: "+ prop.toString());
 
         // 设置消费分组参数

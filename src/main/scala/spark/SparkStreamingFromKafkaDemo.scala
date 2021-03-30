@@ -15,7 +15,6 @@ object SparkStreamingFromKafkaDemo {
 
     //环境对象，设置采集周期
     val scc: StreamingContext = new StreamingContext(conf, Seconds(10))
-    // TODO: 可以通过ssc.sparkContext 来访问SparkContext或者通过已经存在的SparkContext来创建StreamingContext
 
     //设置检查点目录
     scc.sparkContext.setCheckpointDir("data/checkpoint")

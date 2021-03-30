@@ -20,6 +20,12 @@ public class WordCount {
         this.captureTime = System.currentTimeMillis() / 1000;
     }
 
+    public WordCount(String word, int count, long captureTime) {
+        this.word = word;
+        this.count = count;
+        this.captureTime = captureTime;
+    }
+
     public String getWord() {
         return word;
     }

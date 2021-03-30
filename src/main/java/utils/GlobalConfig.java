@@ -1,5 +1,6 @@
 package utils;
 
+import groovy.lang.Closure;
 import groovy.util.ConfigSlurper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,8 +18,6 @@ public class GlobalConfig {
     private Logger logger = LoggerFactory.getLogger(GlobalConfig.class);
 
     private volatile static GlobalConfig globalConfig;
-
-    public Map<String, Object> groovy = new HashMap<>();
 
     public Properties properties = new Properties();
 
@@ -35,7 +33,8 @@ public class GlobalConfig {
 
         try {
             Map map = configSlurper.parse(groovyFile.toURI().toURL()).flatten();
-            groovy.putAll(map);
+//            groovy.putAll(map);
+            properties.putAll(map);
         } catch (Exception e) {
             logger.error("init groovy failed: {}",e);
             e.printStackTrace();
@@ -80,7 +79,6 @@ public class GlobalConfig {
             synchronized (GlobalConfig.class) {
                 if (globalConfig != null) {
                     globalConfig.properties.clear();
-                    globalConfig.groovy.clear();
                     globalConfig = null;
                 }
             }
@@ -112,25 +110,15 @@ public class GlobalConfig {
     public static void test() {
         GlobalConfig config = GlobalConfig.instance("dev","conf");
 
-//        String bootstrapServers = (String) config.groovy.get("bootstrap.servers");
-//        System.out.println("bootstrap.server="+ bootstrapServers);
-//
-//        Object groupId = ((Closure) config.groovy.get("group.id")).call("test");
-//        System.out.println("group.id="+ groupId);
-//
-//        String study = (String) config.properties.get("study");
-//        System.out.println("study="+ study);
-
         System.out.println("config :"+ config.properties);
-        System.out.println("config :"+ config.groovy);
 
+        String groupId =(String) ((Closure) config.properties.get("group.id")).call("test");
+        System.out.println("group.id="+ groupId);
         System.out.println("===============");
 
         GlobalConfig filterConfig = GlobalConfig.reInstance("dev", "conf",
-                pathname -> pathname.getName().equals("test.groovy"));
-
+                pathname -> pathname.getName().equals("config.groovy"));
         System.out.println("filterConfig:"+ filterConfig.properties);
-        System.out.println("filterConfig:"+ filterConfig.groovy);
 
     }
 

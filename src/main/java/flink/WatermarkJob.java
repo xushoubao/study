@@ -49,8 +49,7 @@ public class WatermarkJob {
         SingleOutputStreamOperator<WordCount> processStream = inputStream.assignTimestampsAndWatermarks(WatermarkStrategy.<WordCount>forBoundedOutOfOrderness(Duration.ofSeconds(5)) .withTimestampAssigner(new SerializableTimestampAssigner<WordCount>() {
             @Override
             public long extractTimestamp(WordCount element, long recordTimestamp) {
-                System.out.println("receive a message: "+ element.toString());
-                return element.getCaptureTime();
+                return element.getCaptureTime() * 1000L; // 注意这里是毫秒，否则时间会有问题
             }
         })).keyBy(new KeySelector<WordCount, String>() {
             @Override
@@ -58,7 +57,7 @@ public class WatermarkJob {
                 return value.getWord();
             }
         }).window(TumblingEventTimeWindows.of(Time.seconds(20))).allowedLateness(Time.seconds(10)).reduce(new ReduceFunction<WordCount>() {
-            @Override // todo: 为什么没有输出，是不是时间设置的有问题？？？
+            @Override
             public WordCount reduce(WordCount value1, WordCount value2) throws Exception {
                 return new WordCount(value1.getWord(), value1.getCount() + value2.getCount(), Math.max(value1.getCaptureTime(), value2.getCaptureTime()));
             }

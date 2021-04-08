@@ -9,7 +9,7 @@ public class WcFlatMapFunc implements FlatMapFunction<String, WordCount> {
     public void flatMap(String in, Collector<WordCount> collector) throws Exception {
         String[] words = in.split(",");
         if (words.length == 2) {
-            collector.collect(new WordCount(words[0], Integer.parseInt(words[1])));
+            collector.collect(new WordCount(words[0], Integer.parseInt(words[1]), System.currentTimeMillis() / 1000));
         }
     }
 }

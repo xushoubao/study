@@ -1,6 +1,7 @@
 package flink;
 
 import bean.WordCount;
+import groovy.lang.Closure;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.eventtime.*;
 import org.apache.flink.api.common.functions.ReduceFunction;
@@ -30,16 +31,16 @@ public class WatermarkJob {
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         // kafka的参数
-        Properties prop = GlobalConfig.instance("dev", "conf").properties;
-        prop.setProperty("group.id", "watermatkJob");
-        System.out.println("config: "+ prop.toString());
+        Properties properties = GlobalConfig.instance("dev", "conf").properties;
+        String groupId = (String) ((Closure) properties.get("group.id")).call("watermark");
+        properties.setProperty("group.id", groupId);
 
         // 设置消费分组参数
         FlinkKafkaConsumer<WordCount> consumer = new FlinkKafkaConsumer<>("watermark",
                 new TypeInformationSerializationSchema<WordCount>(
                         TypeInformation.of(WordCount.class),
                         new ExecutionConfig()),
-                prop);
+                properties);
         consumer.setStartFromGroupOffsets();
 
         // 输入数据
@@ -59,7 +60,18 @@ public class WatermarkJob {
         }).window(TumblingEventTimeWindows.of(Time.seconds(20))).allowedLateness(Time.seconds(10)).reduce(new ReduceFunction<WordCount>() {
             @Override
             public WordCount reduce(WordCount value1, WordCount value2) throws Exception {
-                return new WordCount(value1.getWord(), value1.getCount() + value2.getCount(), Math.max(value1.getCaptureTime(), value2.getCaptureTime()));
+                String batch;
+                if (value1.getBatchId().compareTo(value2.getBatchId()) > 0) {
+                    batch = value1.getBatchId();
+                } else {
+                    batch = value2.getBatchId();
+                }
+
+                int count = value1.getCount() + value2.getCount();
+
+                long captureTime = Math.max(value1.getCaptureTime(), value2.getCaptureTime());
+
+                return new WordCount(batch, value1.getWord(), count, captureTime);
             }
         });
 

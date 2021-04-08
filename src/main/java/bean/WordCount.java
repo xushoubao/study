@@ -1,29 +1,34 @@
 package bean;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class WordCount {
+
+    private String batchId;
     private String word;
     private int count;
     private long captureTime;
-    private final static String[] arr = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
 
     public WordCount() {
-
-    }
-
-    public WordCount(String word, int count) {
-        this.word = word;
-        this.count = count;
-        this.captureTime = System.currentTimeMillis() / 1000;
     }
 
     public WordCount(String word, int count, long captureTime) {
         this.word = word;
         this.count = count;
         this.captureTime = captureTime;
+    }
+
+    public WordCount(String batchId, String word, int count, long captureTime) {
+        this.batchId = batchId;
+        this.word = word;
+        this.count = count;
+        this.captureTime = captureTime;
+    }
+
+    public String getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(String batchId) {
+        this.batchId = batchId;
     }
 
     public String getWord() {
@@ -52,22 +57,11 @@ public class WordCount {
 
     @Override
     public String toString() {
-        return "word: "+ word +",count: "+ count +",time: "+ captureTime;
-    }
-
-    public static WordCount genWc() {
-        int index  = new Random().nextInt(arr.length);
-        int count = new Random().nextInt(100);
-        String word = arr[index];
-        return new WordCount(word, count);
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        List<String> res = new ArrayList<>();
-        for (int i = 0; i < 50 ; i++) {
-            res.add(WordCount.genWc().toString());
-            Thread.sleep(100);
-        }
-        res.forEach(System.out::println);
+        return "WordCount{" +
+                "batchId='" + batchId + '\'' +
+                ", word='" + word + '\'' +
+                ", count=" + count +
+                ", captureTime=" + captureTime +
+                '}';
     }
 }

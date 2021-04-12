@@ -14,7 +14,7 @@ environments {
 
         // mysql
         driver = "com.mysql.jdbc.Driver"
-        url = "jdbc:mysql://192.168.1.1:3306/test"
+        url = "jdbc:mysql://192.168.1.1:3306/test?useSSL=false"
         user = "root"
         password = "123456"
         pool.size = 5

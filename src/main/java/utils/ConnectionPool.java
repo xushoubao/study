@@ -6,44 +6,47 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class ConnectionPool {
     private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
-    private static LinkedList<Connection> connectionList;
+
+    static ArrayBlockingQueue<Connection> queue = null;
+
+    public static void start() {
+        getConnection();
+    }
 
     public static Connection getConnection() {
 
-        if (connectionList == null) {
+        if (queue == null) {
             synchronized (ConnectionPool.class) {
-                if (connectionList == null) {
-                    connectionList = new LinkedList();
+                if (queue == null) {
+                    queue = new ArrayBlockingQueue(10);
                     createConnection();
 
                 }
             }
         }
 
-        return connectionList.poll();
+        return queue.poll();
     }
 
     private static void createConnection() {
         Properties properties = GlobalConfig.instance("dev", "conf").properties;
         String driver = properties.getProperty("driver","com.mysql.jdbc.Driver");
-        String url = properties.getProperty("url", "jdbc:mysql://192.168.1.1:3306/test");
+        String url = properties.getProperty("url");
         String user = properties.getProperty("user");
         String password = properties.getProperty("password");
-        int poolSize = Integer.valueOf(properties.getProperty("pool.size", "1"));
+        int poolSize = (int) properties.getOrDefault("pool.size", 1);
 
-
-        System.out.println(properties.toString());
         try {
             Class.forName(driver);
             for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
-                connectionList.push(connection);
-                logger.info("success create {} size db connection");
+                queue.offer(connection);
+                logger.info("success create {} size db connection, connection hashcode is {}", i+1, connection.hashCode());
             }
 
         } catch (ClassNotFoundException e) {
@@ -52,17 +55,18 @@ public class ConnectionPool {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
             closeCollection();
+        } finally {
+
         }
     }
 
     public static void closeCollection() {
-        if (connectionList != null) {
+        if (queue != null) {
             synchronized (ConnectionPool.class) {
-                if (connectionList != null) {
+                if (queue != null) {
                     // 关闭所有连接
-                    connectionList.forEach(connection -> {
+                    queue.forEach(connection -> {
                         if (connection != null) {
                             try {
                                 connection.close();
@@ -75,7 +79,7 @@ public class ConnectionPool {
                     });
 
                     // 将连接池置为空
-                    connectionList = null;
+                    queue = null;
                 }
             }
         }
@@ -84,7 +88,9 @@ public class ConnectionPool {
     }
 
     public static void returnConntion(Connection connection) {
-        connectionList.push(connection);
+        if (connection != null) {
+            queue.offer(connection);
+        }
     }
 
 

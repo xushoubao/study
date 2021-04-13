@@ -14,27 +14,87 @@ public class ConnectionPool {
 
     static ArrayBlockingQueue<Connection> queue = null;
 
+    static Properties properties = null;
+
+    /**
+     * 启动连接池
+     */
     public static void start() {
-        getConnection();
+        init();
     }
 
-    public static Connection getConnection() {
+    /**
+     * 关闭连接池
+     */
+    public static void stop(){
+        closeCollection();
+    }
 
+    /**
+     * 申请一个连接
+     * @return
+     * @throws Exception
+     */
+    public static Connection applyConnection() throws Exception {
+        Connection connection = null;
+
+        int retryCount = (int) properties.getOrDefault("retry.count", 10);
+        int sleepSecondTime = (int) properties.getOrDefault("sleep.second.time", 1);
+
+        while ((connection = queue.poll()) == null && retryCount-- > 0 ) {
+            try {
+                Thread.sleep(sleepSecondTime * 1000L);
+                logger.debug("connection is null, try again after {} seconds, still retry {} times, current thread {}",
+                        sleepSecondTime, retryCount, Thread.currentThread().getName());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (connection == null) {
+            throw new Exception("get connection failed, please increase poos.size or retry.count or sleep.second.time");
+        }
+
+        return connection;
+    }
+
+    /**
+     * 归还一个连接
+     * @param connection
+     */
+    public static void returnConntion(Connection connection) {
+        if (connection != null) {
+            queue.offer(connection);
+        }
+    }
+
+    /**
+     * 初始化配置和线程池
+     * @return
+     */
+    private static void init() {
         if (queue == null) {
             synchronized (ConnectionPool.class) {
                 if (queue == null) {
                     queue = new ArrayBlockingQueue(10);
-                    createConnection();
-
+                    initConfig();
+                    initConnection();
                 }
             }
         }
-
-        return queue.poll();
     }
 
-    private static void createConnection() {
-        Properties properties = GlobalConfig.instance("dev", "conf").properties;
+    /**
+     * 加载配置
+     */
+    private static void initConfig() {
+        properties = GlobalConfig.instance("dev", "conf").properties;
+    }
+
+    /**
+     * 创建连接，并初始化连接池
+     */
+    private static void initConnection() {
         String driver = properties.getProperty("driver","com.mysql.jdbc.Driver");
         String url = properties.getProperty("url");
         String user = properties.getProperty("user");
@@ -46,8 +106,9 @@ public class ConnectionPool {
             for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 queue.offer(connection);
-                logger.info("success create {} size db connection, connection hashcode is {}", i+1, connection.hashCode());
+                logger.debug("success create {} size db connection", i+1);
             }
+            logger.info("create all db connection success");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -61,7 +122,10 @@ public class ConnectionPool {
         }
     }
 
-    public static void closeCollection() {
+    /**
+     * 关闭连接，并清空连接池
+     */
+    private static void closeCollection() {
         if (queue != null) {
             synchronized (ConnectionPool.class) {
                 if (queue != null) {
@@ -70,28 +134,21 @@ public class ConnectionPool {
                         if (connection != null) {
                             try {
                                 connection.close();
+                                queue.remove(connection);
+                                logger.debug("still {} connectios in connection pool", queue.size());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                connection = null;
+
                             }
                         }
                     });
-
                     // 将连接池置为空
                     queue = null;
+                    logger.info("close all db connection success");
                 }
             }
         }
-
-        logger.info("close all db connection success");
     }
-
-    public static void returnConntion(Connection connection) {
-        if (connection != null) {
-            queue.offer(connection);
-        }
-    }
-
 
 }

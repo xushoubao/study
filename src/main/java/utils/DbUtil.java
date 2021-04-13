@@ -9,25 +9,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 public class DbUtil {
 
     private static Logger logger = LoggerFactory.getLogger(DbUtil.class);
 
-    public static void insert(String sql) {
-        Connection connection = null;
-        while ((connection = ConnectionPool.getConnection()) == null) {
-            try {
-                Thread.sleep(1000L);
-                logger.warn("connection is null, try again after {} seconds", 1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    /**
+     * 执行一条sql，增删改
+     * @param sql
+     * @throws Exception
+     */
+    public static void execute(String sql) throws Exception {
+        Connection connection = ConnectionPool.applyConnection();
+
         PreparedStatement pstat = null;
         try {
             pstat = connection.prepareStatement(sql);
-            logger.warn("sql [{}] use conn [{}], pstat [{}]", sql, connection.hashCode(), pstat.hashCode());
             pstat.execute();
             logger.info("sql [{}] execute success", sql);
 
@@ -48,46 +46,51 @@ public class DbUtil {
 
     }
 
-    public static void delete() {
 
-    }
 
     public static List<Object> query() {
 
         return new ArrayList<>();
     }
 
-    public static void update() {
 
-    }
+    public static void testexecute() throws Exception {
+        int count = 20;
+        CountDownLatch latch = new CountDownLatch(count);
 
-
-    public static void testInsert() {
         ConnectionPool.start();
         try {
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < count; i++) {
                 new Thread(() -> {
 
                     int age = new Random().nextInt(50);
                     String name = "zhangsan_"+ age;
                     String sql = String.format(" insert into test(name, age) values ('%s', %s) ", name, age);
 
-                    DbUtil.insert(sql);
+                    try {
+                        DbUtil.execute(sql);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    latch.countDown();
 
                 }).start();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-
-//            ConnectionPool.closeCollection();
         }
+
+        if (latch.getCount() != 0) {
+            latch.await();
+        }
+        ConnectionPool.stop();
     }
 
 
-    public static void main(String[] args) {
-        testInsert();
+    public static void main(String[] args) throws Exception {
+        testexecute();
     }
 
 }

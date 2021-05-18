@@ -93,7 +93,7 @@ public class GlobalConfig {
         if (configDir != null) {
             File configDirFile = new File(configDir);
             if (!configDirFile.isDirectory()) {
-                logger.warn("congif dir is not directory");
+                logger.warn("config dir is not directory");
             }
 
             // 加载新的配置

@@ -19,9 +19,7 @@
 package flink;
 
 import datasource.GeneratorWordCount;
-import handler.WcAggregateFunc;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,33 +44,9 @@ public class StreamingJob {
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		logger.info("env create success ...");
 
-		env.addSource(new GeneratorWordCount()).setParallelism(1)
-//				.keyBy(WordCount::getWord)
-				.keyBy((wordCount) -> wordCount.getWord())
-				.timeWindow(Time.seconds(20)).aggregate(new WcAggregateFunc())
-				.print();
+		env.addSource(new GeneratorWordCount()).setParallelism(5).print();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.readTextFile(textPath);
-		 *
-		 * then, transform the resulting DataStream<String> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.join()
-		 * 	.coGroup()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide for the Java API:
-		 *
-		 * https://flink.apache.org/docs/latest/apis/streaming/index.html
-		 *
-		 */
-
-		// execute program
+		// exec
 		env.execute("Flink Streaming Job Java Demo");
 	}
 }

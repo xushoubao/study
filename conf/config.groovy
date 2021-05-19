@@ -3,10 +3,11 @@ environments {
     dev {
         // kafka
         bootstrap.servers = "localhost:9092"
-        group.id = {
-            String id ->
-                return "study_"+ id
-        }
+//        group.id = {
+//            String id ->
+//                return "study_"+ id
+//        }
+        group.id = "study"
 
         // redis
         host = "localhost"

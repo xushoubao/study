@@ -3,11 +3,10 @@ environments {
     dev {
         // kafka
         bootstrap.servers = "localhost:9092"
-//        group.id = {
-//            String id ->
-//                return "study_"+ id
-//        }
-        group.id = "study"
+        group.id = {
+            String id ->
+                return "study_"+ id
+        }
 
         // redis
         host = "localhost"
@@ -25,6 +24,23 @@ environments {
         retry.count = 5
         // 每次重新申请连接间隔的时间
         sleep.second.time = 2
+
+    }
+
+    com {
+        // mysql
+        input.hostname = "47.110.230.144";
+        input.port = 8306
+        input.user = "mpo"
+        input.password = "mponline"
+        input.databaseList = "analysis, datax_product"  // 可以监控多个库
+        input.tableList = "analysis.person, analysis.person_new, datax_product.person"; //如果不写则监控库下的所有表，需要使用【库名.表名】
+
+        output.driver = "com.mysql.jdbc.Driver"
+        output.url = "jdbc:mysql://47.110.230.144:8306/warehouse?useUnicode=true&characterEncoding=UTF-8&useSSL=false"
+        output.user = "mpo"
+        output.password = "mponline"
+
 
     }
 

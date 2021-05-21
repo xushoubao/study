@@ -14,7 +14,6 @@ import java.util.Properties;
 
 /**
  * 向mysql写入数据
- * todo: 不能识别字段类型（遗留，目前建表全部使用text类型）
  */
 public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
 

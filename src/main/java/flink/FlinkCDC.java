@@ -5,12 +5,11 @@ import com.alibaba.ververica.cdc.connectors.mysql.MySQLSource;
 import com.alibaba.ververica.cdc.connectors.mysql.table.StartupOptions;
 import com.alibaba.ververica.cdc.debezium.DebeziumSourceFunction;
 import datasink.MysqlCdcSink;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
@@ -26,8 +25,14 @@ public class FlinkCDC {
 
     public static void main(String[] args) throws Exception {
 
+        ParameterTool parameterTool = ParameterTool.fromArgs(args);
+        if (!checkLaunch(parameterTool)) {
+            System.out.println("Param Error");
+            System.exit(1);
+        }
+
         // 读配置
-        Properties properties = GlobalConfig.instance("com", "conf", pathname -> pathname.getName().endsWith(".groovy")).properties;
+        Properties properties = GlobalConfig.instance(parameterTool.get("env"), parameterTool.get("config"), pathname -> pathname.getName().endsWith(".groovy")).properties;
         logger.info("current config is [{}]", properties);
 
         // 获取流处理执行环境
@@ -49,7 +54,7 @@ public class FlinkCDC {
                 .databaseList(properties.getProperty("input.databaseList"))
                 .tableList(properties.getProperty("input.tableList"))
                 .deserializer(new CdcRecordDebeziumDeserializationSchema()) //读的数据是binlog文件，反序列化器，解析数据
-                .startupOptions(StartupOptions.latest())
+                .startupOptions(parameterTool.get("s") == null ? StartupOptions.initial() : StartupOptions.latest())
                 .build();
 
         DataStreamSource<CdcRecord> streamSource = env.addSource(sourceFunction).setParallelism(1);
@@ -59,5 +64,26 @@ public class FlinkCDC {
 
         // 启动任务
         env.execute("FlinkCDC Stream Job");
+    }
+
+    private static boolean checkLaunch(ParameterTool parameterTool) {
+        String checkpointParam = parameterTool.get("s");
+        if (checkpointParam != null) {
+            logger.info("s={}", checkpointParam);
+        }
+
+        String env = parameterTool.get("env");
+        if (env == null) {
+            System.out.println("param [--env] nedd");
+            return false;
+        }
+
+        String config = parameterTool.get("config");
+        if (config == null) {
+            System.out.println("param [--config] need");
+            return false;
+        }
+
+        return true;
     }
 }

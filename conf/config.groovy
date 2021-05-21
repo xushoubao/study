@@ -33,8 +33,8 @@ environments {
         input.port = 8306
         input.user = "mpo"
         input.password = "mponline"
-        input.databaseList = "analysis, datax_product"  // 可以监控多个库
-        input.tableList = "analysis.person, analysis.person_new, datax_product.person"; //如果不写则监控库下的所有表，需要使用【库名.表名】
+        input.databaseList = "analysis"  // 多个用,分割
+        input.tableList = "analysis.person"; //如果不写则监控库下的所有表，需要使用，多个用,分割【库名.表名】
 
         output.driver = "com.mysql.jdbc.Driver"
         output.url = "jdbc:mysql://47.110.230.144:8306/warehouse?useUnicode=true&characterEncoding=UTF-8&useSSL=false"

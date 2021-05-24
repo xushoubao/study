@@ -74,7 +74,7 @@ public class FlinkCDC {
 
         String env = parameterTool.get("env");
         if (env == null) {
-            System.out.println("param [--env] nedd");
+            System.out.println("param [--env] need");
             return false;
         }
 

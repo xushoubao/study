@@ -12,6 +12,8 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ public class CdcRecordDebeziumDeserializationSchema implements DebeziumDeseriali
     private static final int DATA_SOURCE_INDEX = 0;
     private static final int DATABASE_INDEX = 1;
     private static final int TABLE_INDEX = 2;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void deserialize(SourceRecord sourceRecord, Collector<CdcRecord> collector) throws Exception {
@@ -68,7 +72,12 @@ public class CdcRecordDebeziumDeserializationSchema implements DebeziumDeseriali
         Schema schema = struct.schema();
         for (Field field : schema.fields()) {
             String name = field.name();
-            map.put(name, struct.get(name));
+            Object value = struct.get(name);
+            String fieldType = field.schema().name();
+            if ("io.debezium.time.Timestamp".equals(fieldType)) {
+                value = sdf.format(new Date(Long.parseLong(value.toString()) - 8 * 3600 * 1000));
+            }
+            map.put(name, value);
         }
         return map;
     }

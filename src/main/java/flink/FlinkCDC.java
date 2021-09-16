@@ -42,7 +42,7 @@ public class FlinkCDC {
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         env.enableCheckpointing(60 * 1000L);
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-        env.setStateBackend(new FsStateBackend("file:///Users/bao/code/private/study/data/checkpoint"));
+//        env.setStateBackend(new FsStateBackend("./data/checkpoint"));
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 5000L));
 
         // 读取mysql变化数据 监控MySQL中变化的数据

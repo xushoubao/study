@@ -24,12 +24,16 @@ public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
     private String user;
     private String password;
     private Connection connection = null;
+    private String database;
+    private String table;
 
     public MysqlCdcSink(Properties properties) {
         this.driver = properties.getOrDefault("output.driver", "com.mysql.jdbc.Driver").toString();
-        this.url = properties.getOrDefault("output.url", "jdbc:mysql://47.110.230.144:8306/warehouse?useUnicode=true&characterEncoding=UTF-8&useSSL=false").toString();
-        this.user = properties.getOrDefault("output.user", "mpo").toString();
-        this.password = properties.getOrDefault("output.password", "mponline").toString();
+        this.url = properties.getProperty("output.url");
+        this.user = properties.getProperty("output.user");
+        this.password = properties.getProperty("output.password");
+        this.database = properties.getProperty("output.database");
+        this.table = properties.getProperty("output.table");
     }
 
     @Override
@@ -38,7 +42,7 @@ public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         connection.setAutoCommit(false);
-        logger.info("create jdbc connection success.");
+        logger.info("create jdbc connection[{}] success.", connection.hashCode());
     }
 
     @Override
@@ -48,8 +52,8 @@ public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
 
         Map<String, Object> beforeSchema = cdcRecord.getBeforeSchema();
         if (beforeSchema != null) { // delete from db
-            String sql = deleteSql(cdcRecord);
-            if (statement.execute(sql)) {
+            String sql = deleteSql(beforeSchema);
+            if (sql != null && statement.execute(sql)) {
                 logger.debug("sql[{}] exec success.", sql);
             }
 
@@ -57,8 +61,8 @@ public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
 
         Map<String, Object> afterSchema = cdcRecord.getAfterSchema();
         if (afterSchema != null) { // insert into db
-            String sql = insertSql(cdcRecord);
-            if (statement.execute(sql)) {
+            String sql = insertSql(afterSchema);
+            if (sql != null && statement.execute(sql)) {
                 logger.debug("sql[{}] exec success.", sql);
             }
         }
@@ -66,51 +70,59 @@ public class MysqlCdcSink extends RichSinkFunction<CdcRecord> {
         connection.commit();
     }
 
-    private String insertSql(CdcRecord cdcRecord) {
-        Map<String, Object> afterSchema = cdcRecord.getAfterSchema();
-        if (afterSchema == null) {
-            return null;
-        }
-
+    private String insertSql(Map<String, Object> schema) {
+        // 动态拼接sql
         StringBuilder name = new StringBuilder();
         StringBuilder value = new StringBuilder();
         int count = 0;
-        for (Map.Entry<String, Object> entry : afterSchema.entrySet()) {
+        for (Map.Entry<String, Object> entry : schema.entrySet()) {
             String columnName = entry.getKey();
             Object columnValue = entry.getValue();
+            if (columnValue == null) {
+                continue;
+            }
             if(count != 0) {
                 name.append(", ");
                 value.append(", ");
             }
             name.append(columnName);
             value.append("'").append(columnValue).append("'");
-
             count++;
         }
 
-        return String.format(" insert into warehouse.%s (%s) values (%s)", cdcRecord.getTable(), name, value);
-    }
-
-    private String deleteSql(CdcRecord cdcRecord) {
-        Map<String, Object> primaryKey = cdcRecord.getPrimaryKey();
-        if (primaryKey == null) {
-            return null;
+        // 跳过空行
+        String sql = null;
+        if (count != 0) {
+            sql = String.format(" insert into %s.%s (%s) values (%s)", database, table, name, value);
         }
 
+        return sql;
+    }
+
+    private String deleteSql(Map<String, Object> schema) {
+        // 动态拼接条件
         StringBuilder condition = new StringBuilder();
         int count = 0;
-        for (Map.Entry<String, Object> entry : primaryKey.entrySet()) {
+        for (Map.Entry<String, Object> entry : schema.entrySet()) {
             String columnName = entry.getKey();
             Object columnValue = entry.getValue();
+            if (columnValue == null) {
+                continue;
+            }
             if (count != 0) {
                 condition.append(" and ");
             }
             condition.append(columnName).append(" = ").append("'").append(columnValue).append("'");
-
             count++;
         }
 
-        return String.format(" delete from warehouse.%s where %s ", cdcRecord.getTable(), condition);
+        // 跳过空行
+        String sql = null;
+        if (count != 0) {
+            sql = String.format(" delete from %s.%s where %s ", database, table, condition);
+        }
+
+        return sql;
     }
 
     @Override
